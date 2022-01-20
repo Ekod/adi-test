@@ -3,27 +3,24 @@ import { Text } from "./Text";
 import { Buttons } from "./Buttons";
 import { Table } from "./Table";
 
+export enum ViewStates {
+  INITIAL = "INITIAL",
+  SPLIT = "SPLIT",
+  FULL = "FULL",
+}
+
+export function checkViewState(stateView: ViewStates, passedView: ViewStates){
+  return stateView === passedView;
+}
+
 export function App() {
-  const [initialView, setInitialView] = useState(true);
-  const [splitView, setSplitView] = useState(false);
-  const [fullView, setFullView] = useState(false);
+  const [view, setView] = useState<ViewStates>(ViewStates.INITIAL);
 
   return (
     <div style={{ display: "flex", height: "70vh" }}>
-      <Table
-        initialView={initialView}
-        splitView={splitView}
-        fullView={fullView}
-      />
-      <Buttons
-        initialView={initialView}
-        splitView={splitView}
-        fullView={fullView}
-        setInitialView={setInitialView}
-        setSplitView={setSplitView}
-        setFullView={setFullView}
-      />
-      <Text fullView={fullView}/>
+      <Table view={view} />
+      <Buttons view={view} setView={setView} />
+      <Text view={view} />
     </div>
   );
 }

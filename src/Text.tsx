@@ -1,12 +1,13 @@
 import React from "react";
+import { checkViewState, ViewStates } from "./App";
 
 interface IProps {
-  fullView: boolean;
+  view: ViewStates;
 }
 
-export function Text({ fullView }: IProps) {
+export function Text({ view }: IProps) {
   function renderContent() {
-    if (fullView) {
+    if (checkViewState(view, ViewStates.FULL)) {
       return null;
     }
 

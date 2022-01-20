@@ -1,50 +1,39 @@
 import React from "react";
+import { checkViewState, ViewStates } from "./App";
 
 interface IProps {
-  initialView: boolean;
-  setInitialView: (value: boolean) => void;
-  splitView: boolean;
-  setSplitView: (value: boolean) => void;
-  fullView: boolean;
-  setFullView: (value: boolean) => void;
+  view: ViewStates;
+  setView: (view: ViewStates) => void;
 }
 
 export function Buttons({
-  initialView,
-  splitView,
-  fullView,
-  setInitialView,
-  setSplitView,
-  setFullView,
+  view,
+  setView,
 }: IProps) {
   function onRightClickHandler() {
-    if (initialView) {
-      setInitialView(false);
-      setSplitView(true);
-    } else if (splitView) {
-      setSplitView(false);
-      setFullView(true);
+    if (checkViewState(view, ViewStates.INITIAL)) {
+      setView(ViewStates.SPLIT);
+    } else if (checkViewState(view, ViewStates.SPLIT)) {
+      setView(ViewStates.FULL);
     }
   }
 
   function onLeftClickHandler() {
-    if (fullView) {
-      setFullView(false);
-      setSplitView(true);
-    } else if (splitView) {
-      setSplitView(false);
-      setInitialView(true);
+    if (checkViewState(view, ViewStates.FULL)) {
+      setView(ViewStates.SPLIT);
+    } else if (checkViewState(view, ViewStates.SPLIT)) {
+      setView(ViewStates.INITIAL);
     }
   }
 
   function renderButtons() {
-    if (initialView) {
+    if (checkViewState(view, ViewStates.INITIAL)) {
       return (
         <button style={{ width: "100%" }} onClick={onRightClickHandler}>
           &#62;
         </button>
       );
-    } else if (fullView) {
+    } else if (checkViewState(view, ViewStates.FULL)) {
       return (
         <button style={{ width: "100%" }} onClick={onLeftClickHandler}>
           &#60;

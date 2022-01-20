@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { checkViewState, ViewStates } from "./App";
 
 interface IProps {
-  initialView: boolean;
-  splitView: boolean;
-  fullView: boolean;
+  view: ViewStates;
 }
 
 enum TableContainerWidths {
@@ -12,23 +11,23 @@ enum TableContainerWidths {
   full = "100%",
 }
 
-export function Table({ initialView, splitView, fullView }: IProps) {
+export function Table({ view}: IProps) {
   const [width, setWidth] = useState<TableContainerWidths>(
     TableContainerWidths.initial
   );
 
   useEffect(() => {
-    if (splitView) {
+    if (checkViewState(view, ViewStates.SPLIT)) {
       setWidth(TableContainerWidths.split);
-    } else if (fullView) {
+    } else if (checkViewState(view, ViewStates.FULL)) {
       setWidth(TableContainerWidths.full);
     } else {
       setWidth(TableContainerWidths.initial);
     }
-  }, [initialView, splitView, fullView]);
+  }, [view]);
 
   function renderContent() {
-    if (initialView) {
+    if (checkViewState(view, ViewStates.INITIAL)) {
       return null;
     }
     return (
@@ -39,7 +38,7 @@ export function Table({ initialView, splitView, fullView }: IProps) {
         <th>Fourth</th>
         <th>Fifth</th>
         <th>Sixth</th>
-        {fullView && (
+        {checkViewState(view, ViewStates.FULL) && (
           <>
             <th>Seventh</th>
             <th>Eighth</th>
